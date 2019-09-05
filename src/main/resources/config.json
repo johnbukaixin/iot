@@ -1,0 +1,7 @@
+{
+  "topic":"pos_message_all",
+  "qos":2,
+  "serverURIs":["tcp://184.170.209.50:1883"],
+
+  "clientId":"JavaSample"
+}
