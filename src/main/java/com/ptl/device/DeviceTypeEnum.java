@@ -7,6 +7,13 @@ package com.ptl.device;
  */
 public enum DeviceTypeEnum {
 
+    SERIAL_PORT(),
+    GPIO();
+
+    private int code;
+
+    private String value;
+
 
 
 }

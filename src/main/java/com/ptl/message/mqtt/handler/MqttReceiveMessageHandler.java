@@ -45,7 +45,7 @@ public class MqttReceiveMessageHandler implements SubscribeClientHandler,IMqttMe
     public void subscribe(String topic, int qos, MessageHandleListener messageHandleListener) {
         subscribeInfo.put(topic,messageHandleListener);
         try {
-            mqttClient.subscribe(topic,qos,this);
+            IotMqttClient.getMqttClient().subscribe(topic,qos,this);
         } catch (MqttException e) {
             e.printStackTrace();
         }

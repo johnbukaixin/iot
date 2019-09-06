@@ -1,24 +1,31 @@
 package com.ptl.message.mqtt.model.builder;
 
 import com.ptl.message.mqtt.enums.ModuleEnum;
-import com.ptl.message.mqtt.enums.OperateTypeEnum;
-
-import java.io.File;
+import org.apache.logging.log4j.util.Strings;
 
 /**
  * created by panta on 2019/9/6.
- * topic like "appName/moduleName/deviceId/operate"
+ * topic like "appName/moduleName/deviceId"
+ *
+ * if deviceId value is null,This means that all devices  within this module named moduleName will receive instructions
  * @author panta
  */
-public class MqttTopicBuilder{
+public class MqttTopicBuilder {
 
+    /**
+     * 应用名称
+     */
     private String appName;
 
+    /**
+     * 模块名称
+     */
     private ModuleEnum moduleName;
 
+    /**
+     * 设备id
+     */
     private String deviceId;
-
-    private OperateTypeEnum operate;
 
     public MqttTopicBuilder setAppName(String appName) {
         this.appName = appName;
@@ -35,30 +42,26 @@ public class MqttTopicBuilder{
         return this;
     }
 
-    public MqttTopicBuilder setOperate(OperateTypeEnum operate) {
-        this.operate = operate;
-        return this;
-    }
 
 
-    public String buildTopic(MqttTopicBuilder builder){
+    public String buildTopic() {
         StringBuilder stringBuilder = new StringBuilder();
         String[] appPath = System.getProperty("user.dir").replaceAll("\\\\", "/").split("/");
-        stringBuilder.append(builder.appName == null ? appPath[appPath.length-1] : builder.appName);
+        stringBuilder.append(this.appName == null ? appPath[appPath.length - 1] : this.appName);
 
-        if (builder.moduleName != null){
-            stringBuilder.append("/");
-            stringBuilder.append(builder.moduleName);
+        if (this.moduleName == null) {
+            return stringBuilder.toString();
         }
-        if (builder.deviceId != null){
-            stringBuilder.append("/");
-            stringBuilder.append(builder.deviceId);
-        }
+        stringBuilder.append("/");
+        stringBuilder.append(this.moduleName);
 
-        if (builder.operate != null){
-            stringBuilder.append("/");
-            stringBuilder.append(builder.operate);
+        if (Strings.isEmpty(this.deviceId)) {
+            return stringBuilder.toString();
+
         }
+        stringBuilder.append("/");
+        stringBuilder.append(this.deviceId);
+
 
         return stringBuilder.toString();
     }

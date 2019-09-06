@@ -30,12 +30,18 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
 
     @Override
     public void publish(String topic, MqttMessage message) throws MqttException {
+        MqttTopic mqttTopic = IotMqttClient.getMqttClient().getTopic(topic);
+        MqttDeliveryToken token = mqttTopic.publish(message);
+        token.waitForCompletion();
+        logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());
+        MqttWireMessage response = token.getResponse();
 
+        logger.info("MqttWireMessage response:{}", JSON.toJSONString(response));
     }
 
     //发送消息并获取回执
     public void publish(MqttMessage message) throws MqttException {
-        MqttTopic mqttTopic = mqttClient.getTopic(topic);
+        MqttTopic mqttTopic = IotMqttClient.getMqttClient().getTopic(IotMqttClient.getMqttProperties().getTopic());
         MqttDeliveryToken token = mqttTopic.publish(message);
         token.waitForCompletion();
         logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());
@@ -50,9 +56,7 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
         token.waitForCompletion();
         logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());
         token.getResponse();
-        if (mqttClient.isConnected()) {
-            mqttClient.disconnect(10000);
-        }
-        logger.info("Disconnected: delivery token:{},received:{}", token.hashCode(), token.isComplete());
+
+        logger.info("Disconnected: delivery token:{},received:{}" , token.hashCode() , token.isComplete());
     }
 }
