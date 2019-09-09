@@ -1,24 +1,38 @@
 package com.ptl.message.mqtt;
 
+import com.alibaba.fastjson.JSON;
 import com.ptl.message.mqtt.config.IotMqttClient;
 import com.ptl.message.mqtt.enums.ModuleEnum;
 import com.ptl.message.mqtt.handler.MqttReceiveMessageHandler;
 import com.ptl.message.mqtt.listener.MessageHandleListener;
 import com.ptl.message.mqtt.model.builder.MqttTopicBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * created by panta on 2019/9/4.
  *
  * @author panta
  */
-public class MqttReceiveMessage {
+@Component
+public class MqttReceiveMessage implements ApplicationRunner {
 
-    private MqttReceiveMessageHandler handler = new MqttReceiveMessageHandler();
+    @Resource
+    private MqttReceiveMessageHandler mqttReceiveMessageHandler;
 
-    public static void main(String[] args) {
-        MqttReceiveMessage message = new MqttReceiveMessage();
+    private Logger logger = LoggerFactory.getLogger(MqttReceiveMessage.class);
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         String topic = new MqttTopicBuilder().setDeviceId("1").setModuleName(ModuleEnum.HUMIDITY).buildTopic();
-        message.handler.subscribe(topic ,2, (topic1, message1) -> System.out.println("topic = [" + topic1 + "], message = [" + message1 + "]"));
+        mqttReceiveMessageHandler.subscribe(topic ,2, (topic1, message1) ->
 
+        logger.info("topic1：{}，message1：{}",topic1, JSON.toJSONString(message1)));
     }
 }

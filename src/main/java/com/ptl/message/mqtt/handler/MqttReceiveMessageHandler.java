@@ -24,7 +24,7 @@ public class MqttReceiveMessageHandler implements SubscribeClientHandler,IMqttMe
         return subscribeInfo;
     }
 
-    @Resource(name = "subscribeClient")
+    @Resource
     private MqttClient mqttClient;
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -45,7 +45,7 @@ public class MqttReceiveMessageHandler implements SubscribeClientHandler,IMqttMe
     public void subscribe(String topic, int qos, MessageHandleListener messageHandleListener) {
         subscribeInfo.put(topic,messageHandleListener);
         try {
-            IotMqttClient.getMqttClient().subscribe(topic,qos,this);
+            mqttClient.subscribe(topic,qos,this);
         } catch (MqttException e) {
             e.printStackTrace();
         }

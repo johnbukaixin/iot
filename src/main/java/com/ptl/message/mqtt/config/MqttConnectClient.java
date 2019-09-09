@@ -1,5 +1,6 @@
 package com.ptl.message.mqtt.config;
 
+import com.ptl.message.mqtt.listener.IotPublishCallback;
 import org.apache.logging.log4j.util.Strings;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -14,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
@@ -24,8 +24,8 @@ import java.util.UUID;
  * @author panta
  */
 @Configuration
-public class MqttConnectConfig {
-    private Logger logger = LoggerFactory.getLogger(MqttConnectConfig.class);
+public class MqttConnectClient {
+    private Logger logger = LoggerFactory.getLogger(MqttConnectClient.class);
 
     private String publishClientId;
 
@@ -87,11 +87,12 @@ public class MqttConnectConfig {
     }
 
     @Bean
-    public MqttClient publishClient() {
+    public MqttClient mqttClient() {
         MqttClient client = null;
         try {
             client = new MqttClient(serverUri, publishClientId, new MemoryPersistence());
             client.connect(options);
+            client.setCallback(new IotPublishCallback(this));
             logger.info("publish client is connected,serverUri:{},clientId:{}", serverUri, publishClientId);
         } catch (MqttException e) {
             e.printStackTrace();
@@ -99,16 +100,4 @@ public class MqttConnectConfig {
         return client;
     }
 
-    @Bean
-    public MqttClient subscribeClient() {
-        MqttClient client = null;
-        try {
-            client = new MqttClient(serverUri, subscribeClientId, new MemoryPersistence());
-            client.connect(options);
-            logger.info("subscribe client is connected,serverUri:{},clientId:{}", serverUri, subscribeClientId);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-        return client;
-    }
 }

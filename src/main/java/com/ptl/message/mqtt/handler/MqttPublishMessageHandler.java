@@ -6,7 +6,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
 
     private Logger logger = LoggerFactory.getLogger(MqttPublishMessageHandler.class);
 
-    @Resource(name = "publishClient")
+    @Resource
     private MqttClient mqttClient;
 
     @Value("${mqtt.topic}")
@@ -30,7 +29,7 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
 
     @Override
     public void publish(String topic, MqttMessage message) throws MqttException {
-        MqttTopic mqttTopic = IotMqttClient.getMqttClient().getTopic(topic);
+        MqttTopic mqttTopic = mqttClient.getTopic(topic);
         MqttDeliveryToken token = mqttTopic.publish(message);
         token.waitForCompletion();
         logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());

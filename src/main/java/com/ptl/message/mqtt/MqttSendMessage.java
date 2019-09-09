@@ -7,19 +7,26 @@ import com.ptl.message.mqtt.enums.OperateTypeEnum;
 import com.ptl.message.mqtt.handler.MqttPublishMessageHandler;
 import com.ptl.message.mqtt.model.builder.MqttTopicBuilder;
 import com.ptl.message.mqtt.model.builder.Payload;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * created by panta on 2019/9/4.
  *
  * @author panta
  */
-public class MqttSendMessage {
 
-    public static void main(String[] args) throws MqttException {
+@Component
+public class MqttSendMessage implements ApplicationRunner {
 
-        MqttPublishMessageHandler handler = new MqttPublishMessageHandler();
+    @Resource
+    private MqttPublishMessageHandler mqttPublishMessageHandler;
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         MqttMessage mqttMessage = new MqttMessage();
         mqttMessage.setQos(2);
 
@@ -32,7 +39,7 @@ public class MqttSendMessage {
         mqttMessage.setPayload(JSON.toJSONString(payload).getBytes());
 
         for (int i = 0 ;i <  100 ; i++){
-            handler.publish(topic,mqttMessage);
+            mqttPublishMessageHandler.publish(topic,mqttMessage);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

@@ -12,7 +12,7 @@
         <apache.common.io.version>2.6</apache.common.io.version>
         <pi4j.version>1.2</pi4j.version>
         <eclipse.paho.version>1.2.0</eclipse.paho.version>
-        <fastjson.version>1.2.47</fastjson.version>
+        <fastjson.version>1.2.60</fastjson.version>
         <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
         <log.version>1.7.2</log.version>
     </properties>
