@@ -21,18 +21,16 @@ import javax.annotation.Resource;
  * @author panta
  */
 @Component
-public class MqttReceiveMessage implements ApplicationRunner {
+public class MqttReceiveMessage {
 
     @Resource
     private MqttReceiveMessageHandler mqttReceiveMessageHandler;
 
     private Logger logger = LoggerFactory.getLogger(MqttReceiveMessage.class);
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        String topic = new MqttTopicBuilder().setDeviceId("1").setModuleName(ModuleEnum.HUMIDITY).buildTopic();
-        mqttReceiveMessageHandler.subscribe(topic ,2, (topic1, message1) ->
-
-        logger.info("topic1：{}，message1：{}",topic1, JSON.toJSONString(message1)));
-    }
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//        String topic = new MqttTopicBuilder().setDeviceId("1").setModuleName(ModuleEnum.HUMIDITY).buildTopic();
+//        mqttReceiveMessageHandler.subscribe(topic ,2, (topic1, message1) ->logger.info(""));
+//    }
 }

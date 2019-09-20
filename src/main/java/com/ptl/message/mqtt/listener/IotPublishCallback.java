@@ -5,12 +5,9 @@ import com.ptl.message.mqtt.config.MqttConnectClient;
 import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * created by panta on 2019/9/9.
@@ -27,6 +24,7 @@ public class IotPublishCallback implements MqttCallback {
     private Logger logger = LoggerFactory.getLogger(IotPublishCallback.class);
 
     private MqttConnectClient mqttConnectClient;
+
 
     public IotPublishCallback(MqttConnectClient mqttConnectClient) {
         this.mqttConnectClient = mqttConnectClient;
@@ -62,13 +60,20 @@ public class IotPublishCallback implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        logger.info("topic1：{}，message1：{}", topic, JSON.toJSONString(message));
+        logger.info("topic1：{}，message1：{}", topic, JSON.toJSONString(mqttConnectClient));
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
+//        logger.info("topic1：{}，message1：{}", JSON.toJSONString(token));
 
-        logger.info("已经发布的 QoS 1 或 QoS 2 消息的传递令牌时调用,token={}",token.isComplete());
+        try {
+            logger.info("已经发布的 QoS 1 或 QoS 2 消息的传递令牌时调用,token={}", token.getMessage());
+
+        }catch (Exception e){
+            logger.error("eeeeeee",e);
+        }
+
 
     }
 }

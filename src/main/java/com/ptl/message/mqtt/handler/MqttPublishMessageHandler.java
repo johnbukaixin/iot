@@ -35,7 +35,7 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
         logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());
         MqttWireMessage response = token.getResponse();
 
-        logger.info("MqttWireMessage response:{}", JSON.toJSONString(response));
+//        logger.info("MqttWireMessage response:{}", JSON.toJSONString(response));
     }
 
     //发送消息并获取回执
@@ -46,7 +46,7 @@ public class MqttPublishMessageHandler implements PublishClientHandler {
         logger.info("message is published completely!{},messageId:{}", token.isComplete(), token.getMessageId());
         MqttWireMessage response = token.getResponse();
 
-        logger.info("MqttWireMessage response:{}", JSON.toJSONString(response));
+        logger.info("MqttWireMessage response:{}");
     }
 
     //发送消息并获取回执

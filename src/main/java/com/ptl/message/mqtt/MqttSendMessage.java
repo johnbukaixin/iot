@@ -21,30 +21,30 @@ import javax.annotation.Resource;
  */
 
 @Component
-public class MqttSendMessage implements ApplicationRunner {
+public class MqttSendMessage {
 
     @Resource
     private MqttPublishMessageHandler mqttPublishMessageHandler;
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        MqttMessage mqttMessage = new MqttMessage();
-        mqttMessage.setQos(2);
-
-        Payload payload = new Payload();
-        String topic = new MqttTopicBuilder().setDeviceId("1").setModuleName(ModuleEnum.HUMIDITY).buildTopic();
-        payload.setTopic(topic);
-        payload.setData("hello world");
-        payload.setDeviceType(DeviceTypeEnum.GPIO.name());
-        payload.setOperateType(OperateTypeEnum.OPEN.getValue());
-        mqttMessage.setPayload(JSON.toJSONString(payload).getBytes());
-
-        for (int i = 0 ;i <  100 ; i++){
-            mqttPublishMessageHandler.publish(topic,mqttMessage);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//        MqttMessage mqttMessage = new MqttMessage();
+//        mqttMessage.setQos(2);
+//
+//        Payload payload = new Payload();
+//        String topic = new MqttTopicBuilder().setDeviceId("1").setModuleName(ModuleEnum.HUMIDITY).buildTopic();
+//        payload.setTopic(topic);
+//        payload.setData("hello world");
+//        payload.setDeviceType(DeviceTypeEnum.GPIO.name());
+//        payload.setOperateType(OperateTypeEnum.OPEN.getValue());
+//        mqttMessage.setPayload(JSON.toJSONString(payload).getBytes());
+//
+//        for (int i = 0 ;i <  100 ; i++){
+//            mqttPublishMessageHandler.publish(topic,mqttMessage);
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
